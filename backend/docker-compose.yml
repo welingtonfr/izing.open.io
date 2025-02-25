@@ -15,29 +15,6 @@ services:
     volumes:
       - ".data/redis:/data"
 
-  # database containers, one for each db
-  pg_fixPermissions:
-    image: "bitnami/postgresql:14"
-    user: root
-    command: chown -R 1001:1001 /bitnami/postgresql
-    volumes:
-      - ".data/pg:/bitnami/postgresql/data"
-
-  postgres:
-    image: "bitnami/postgresql:14"
-    restart: always
-    container_name: "pg"
-    env_file:
-      - ./.env
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - ".data/pg:/bitnami/postgresql/data"
-    ports:
-      - "5432:5432"
-    depends_on:
-      - pg_fixPermissions
-
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbitmq
@@ -66,7 +43,6 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - redis
-      - postgres
       - rabbitmq
     ports:
       - "3100:3100"
