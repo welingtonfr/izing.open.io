@@ -10,7 +10,7 @@ RUN npm install
 COPY . .
 
 # Constrói o projeto Vue.js
-RUN npx quasar build
+RUN npx quasar build -P -m pwa
 
 # Estágio de produção (production stage)
 FROM nginx:alpine
